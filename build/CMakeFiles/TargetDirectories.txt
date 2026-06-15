@@ -1,0 +1,3 @@
+/home/troj/OpenGLSandBox/build/CMakeFiles/OpenGLSandbox.dir
+/home/troj/OpenGLSandBox/build/CMakeFiles/edit_cache.dir
+/home/troj/OpenGLSandBox/build/CMakeFiles/rebuild_cache.dir
