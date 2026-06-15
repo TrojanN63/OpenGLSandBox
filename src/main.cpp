@@ -5,9 +5,20 @@
 
 //definição dos vértices
 float vertices[] = {
-  0.0f, -0.5f, 0.0f,
+  -0.5f, -0.5f, 0.0f,
+  0.5, -0.5, 0.0f,
   -0.5f, 0.5f, 0.0f,
+
+
+  //0.5, -0.5, 0.0f, vértice repetido
+  //-0.5f, 0.5f, 0.0f, vértice repetido
   0.5f, 0.5f, 0.0f
+};
+
+//Agora vem os índices para fazer o EBO, onde eu vou economizar vértice
+unsigned int indices[] = {
+  0, 1, 2,
+  1, 2, 3
 };
 
 //Shaders, eles são escritos em uma linguagem própria
@@ -27,7 +38,7 @@ out vec4 FragColor;
 
 void main()
 {
-    FragColor = vec4(1.0, 0.5, 0.2, 1.0);
+    FragColor = vec4(0.5, 0.0, 0.5, 1.0);
 }
 )";
 
@@ -43,7 +54,7 @@ int main(){
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   //Aqui criamos a janela, passando a resolução, nome da janela e nulo para variáveis que não sei o que são
-  GLFWwindow* window = glfwCreateWindow(800, 600, "Teste", nullptr, nullptr);
+  GLFWwindow* window = glfwCreateWindow(640, 480, "Teste 2", nullptr, nullptr);
 
   //Isso para o glfw em caso da janela fechar
   if (!window){
@@ -110,9 +121,11 @@ int main(){
 
   GLuint VAO;
   GLuint VBO;
+  GLuint EBO;
 
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
+  glGenBuffers(1, &EBO);
 
   glBindVertexArray(VAO);
 
@@ -122,6 +135,16 @@ int main(){
     GL_ARRAY_BUFFER,
     sizeof(vertices),
     vertices,
+    GL_STATIC_DRAW
+  );
+
+  //Aqui entra a configuração do EBO
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+  glBufferData(
+    GL_ELEMENT_ARRAY_BUFFER,
+    sizeof(indices),
+    indices,
     GL_STATIC_DRAW
   );
 
@@ -139,12 +162,15 @@ int main(){
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
+  //Descomentar para ligar o wireframe e ver os polígonos:
+  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
   //Esse aqui é o loop principal que opera enquanto a janela estiver aberta
   while (!glfwWindowShouldClose(window)){
     glClearColor(
       0.1f,
-      0.1f,
       0.2f,
+      0.1f,
       1.0f
     );
 
@@ -154,10 +180,11 @@ int main(){
 
     glBindVertexArray(VAO);
 
-    glDrawArrays(
+    glDrawElements(
       GL_TRIANGLES,
-      0,
-      3
+      6,
+      GL_UNSIGNED_INT,
+      0
     );
 
     glfwSwapBuffers(window);
