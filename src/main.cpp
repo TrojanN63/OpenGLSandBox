@@ -6,6 +6,29 @@
 #include <vector>
 
 using namespace std;
+//Callback
+bool commandMode = false;
+string commandBuffer;
+int newN = 10;
+bool needUpdate = false;
+
+void character_callback(GLFWwindow* window, unsigned int codepoint){
+  if (static_cast<char>(codepoint)==':'){
+    commandMode = true;
+    commandBuffer.clear();
+  }
+  if (commandMode){
+    if (static_cast<char>(codepoint)=='n'){
+      newN = stoi(commandBuffer);
+      cout << "New N = " << newN << endl;
+      needUpdate = true;
+      commandMode = false;
+    }
+    if (static_cast<char>(codepoint)!=':'){
+      commandBuffer+=static_cast<char>(codepoint);
+    }
+  }
+}
 //definição dos vértices
 float vertices[] = {
   -0.25f, 0.43f, 0.0f,
@@ -95,7 +118,7 @@ int main(){
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   //Aqui criamos a janela, passando a resolução, nome da janela e nulo para variáveis que não sei o que são
-  GLFWwindow* window = glfwCreateWindow(640, 640, "Teste 2", nullptr, nullptr);
+  GLFWwindow* window = glfwCreateWindow(640, 640, "OpenGL Sandbox", nullptr, nullptr);
 
   //Isso para o glfw em caso da janela fechar
   if (!window){
@@ -172,7 +195,7 @@ int main(){
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
     
-  setVerticesOfCircle(30);
+  setVerticesOfCircle(10);
 
   glBufferData(
     GL_ARRAY_BUFFER,
@@ -186,7 +209,7 @@ int main(){
 
   glBufferData(
     GL_ELEMENT_ARRAY_BUFFER,
-    indicesCircle.size() * sizeof(float),
+    indicesCircle.size() * sizeof(int),
     indicesCircle.data(),
     GL_STATIC_DRAW
   );
@@ -208,8 +231,51 @@ int main(){
   //Descomentar para ligar o wireframe e ver os polígonos:
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+  //Leitura dos dados
+  glfwSetCharCallback(window, character_callback);
+
   //Esse aqui é o loop principal que opera enquanto a janela estiver aberta
   while (!glfwWindowShouldClose(window)){
+    //Atualização
+    if (commandMode){
+      string title = ":" + commandBuffer;
+      glfwSetWindowTitle(window, title.c_str());
+    }
+    if (needUpdate){
+      string title = "OpenGL Sandbox";
+      glfwSetWindowTitle(window, title.c_str());
+      verticesCircle.clear();
+      verticesCircle.push_back(0.0f);
+      verticesCircle.push_back(0.0f);
+      verticesCircle.push_back(0.0f);
+      indicesCircle.clear();
+
+      angle = 0;
+      i = 0;
+
+      setVerticesOfCircle(newN);
+
+      glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+      glBufferData(
+        GL_ARRAY_BUFFER,
+        verticesCircle.size() * sizeof(float),
+        verticesCircle.data(),
+        GL_STATIC_DRAW
+      );
+      
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+      glBufferData(
+        GL_ELEMENT_ARRAY_BUFFER,
+        indicesCircle.size() * sizeof(int),
+        indicesCircle.data(),
+        GL_STATIC_DRAW
+      );
+
+      needUpdate = false;
+    }
+
     glClearColor(
       0.1f,
       0.2f,
