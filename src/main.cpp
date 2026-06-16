@@ -13,6 +13,10 @@ int newN = 10;
 bool needUpdate = false;
 bool wireChange = false;
 bool Wire = false;
+float colorR;
+float colorG;
+float colorB;
+bool hexChange = false;
 
 void character_callback(GLFWwindow* window, unsigned int codepoint){
   if (static_cast<char>(codepoint)==':'){
@@ -49,6 +53,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (commandBuffer.at(0)=='w'){
       Wire = !Wire;
       wireChange = true;
+    }
+    if (commandBuffer.at(0)=='c'){
+      commandBuffer.erase(0,1);
+      colorR = stoi(commandBuffer.substr(0,2), nullptr, 16);
+      colorG = stoi(commandBuffer.substr(2,2), nullptr, 16);
+      colorB = stoi(commandBuffer.substr(4,2), nullptr, 16);
+      hexChange = true; 
     }
     commandMode = false;
   }
@@ -124,9 +135,11 @@ const char* fragmentShaderSource = R"(
 #version 330 core
 out vec4 FragColor;
 
+uniform vec3 objectColor;
+
 void main()
 {
-    FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    FragColor = vec4(objectColor, 1.0);
 }
 )";
 
@@ -205,6 +218,18 @@ int main(){
 
   glLinkProgram(shaderProgram);
 
+  //Linkando a cor
+  GLint colorLocation = glGetUniformLocation(shaderProgram, "objectColor");
+
+  //Cores
+  glUseProgram(shaderProgram);
+  
+  glUniform3f(
+    colorLocation,
+    1,
+    1,
+    1
+  );
   //Buffers
 
   GLuint VAO;
@@ -266,6 +291,17 @@ int main(){
       string title = "OpenGL Sandbox";
       glfwSetWindowTitle(window, title.c_str());
     }
+
+    if (hexChange){
+      glUniform3f(
+        colorLocation,
+        colorR/255,
+        colorG/255,
+        colorB/255
+      );
+      hexChange = false;
+    }
+
     if (needUpdate){
       verticesCircle.clear();
       verticesCircle.push_back(0.0f);
