@@ -11,6 +11,8 @@ bool commandMode = false;
 string commandBuffer;
 int newN = 10;
 bool needUpdate = false;
+bool wireChange = false;
+bool Wire = false;
 
 void character_callback(GLFWwindow* window, unsigned int codepoint){
   if (static_cast<char>(codepoint)==':'){
@@ -18,15 +20,37 @@ void character_callback(GLFWwindow* window, unsigned int codepoint){
     commandBuffer.clear();
   }
   if (commandMode){
-    if (static_cast<char>(codepoint)=='n'){
-      newN = stoi(commandBuffer);
-      cout << "New N = " << newN << endl;
-      needUpdate = true;
-      commandMode = false;
-    }
     if (static_cast<char>(codepoint)!=':'){
       commandBuffer+=static_cast<char>(codepoint);
     }
+  }
+}
+//Callback das teclas especiais
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+    if (action != GLFW_PRESS)
+        return;
+
+    if (!commandMode)
+        return;
+
+    if (key == GLFW_KEY_BACKSPACE)
+    {
+        if (!commandBuffer.empty())
+            commandBuffer.pop_back();
+    }
+
+  if (key == GLFW_KEY_ENTER){
+    if (commandBuffer.at(0)=='n'){
+        commandBuffer.erase(0,1);
+        newN = stoi(commandBuffer);
+
+        needUpdate = true;
+    }
+    if (commandBuffer.at(0)=='w'){
+      Wire = !Wire;
+      wireChange = true;
+    }
+    commandMode = false;
   }
 }
 //definição dos vértices
@@ -102,7 +126,7 @@ out vec4 FragColor;
 
 void main()
 {
-    FragColor = vec4(0.5, 0.0, 0.5, 1.0);
+    FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 }
 )";
 
@@ -228,22 +252,21 @@ int main(){
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 
-  //Descomentar para ligar o wireframe e ver os polígonos:
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
   //Leitura dos dados
   glfwSetCharCallback(window, character_callback);
-
+  //Teclas especiais
+  glfwSetKeyCallback(window, key_callback);
   //Esse aqui é o loop principal que opera enquanto a janela estiver aberta
   while (!glfwWindowShouldClose(window)){
     //Atualização
     if (commandMode){
       string title = ":" + commandBuffer;
       glfwSetWindowTitle(window, title.c_str());
-    }
-    if (needUpdate){
+    }else{
       string title = "OpenGL Sandbox";
       glfwSetWindowTitle(window, title.c_str());
+    }
+    if (needUpdate){
       verticesCircle.clear();
       verticesCircle.push_back(0.0f);
       verticesCircle.push_back(0.0f);
@@ -275,11 +298,19 @@ int main(){
 
       needUpdate = false;
     }
+    if (wireChange){
+      if (Wire){
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+      }else{
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
+      }
+      wireChange = false;
+    }
 
     glClearColor(
-      0.1f,
-      0.2f,
-      0.1f,
+      0.0f,
+      0.0f,
+      0.0f,
       1.0f
     );
 
