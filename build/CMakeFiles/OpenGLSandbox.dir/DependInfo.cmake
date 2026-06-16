@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/troj/OpenGLSandBox/external/src/gl.c" "CMakeFiles/OpenGLSandbox.dir/external/src/gl.c.o" "gcc" "CMakeFiles/OpenGLSandbox.dir/external/src/gl.c.o.d"
-  "/home/troj/OpenGLSandBox/src/main.cpp" "CMakeFiles/OpenGLSandbox.dir/src/main.cpp.o" "gcc" "CMakeFiles/OpenGLSandbox.dir/src/main.cpp.o.d"
+  "/home/tororoj/OpenGLSandBox/external/src/gl.c" "CMakeFiles/OpenGLSandbox.dir/external/src/gl.c.o" "gcc" "CMakeFiles/OpenGLSandbox.dir/external/src/gl.c.o.d"
+  "/home/tororoj/OpenGLSandBox/src/main.cpp" "CMakeFiles/OpenGLSandbox.dir/src/main.cpp.o" "gcc" "CMakeFiles/OpenGLSandbox.dir/src/main.cpp.o.d"
   "" "OpenGLSandbox" "gcc" "CMakeFiles/OpenGLSandbox.dir/link.d"
   )
 

@@ -2,7 +2,10 @@
 //É importante fazer a exportação do glad antes do glfw
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include <cmath>
+#include <vector>
 
+using namespace std;
 //definição dos vértices
 float vertices[] = {
   -0.25f, 0.43f, 0.0f,
@@ -22,6 +25,41 @@ unsigned int indices[] = {
   2, 4, 5,
   2, 5, 6,
   1, 2, 6
+};
+
+//Obtendo o valor de pi
+const double pi = 4 * atan(1);
+
+//Vértices e índices do círculo aproximado, inicialmente só com o centro
+vector<float> verticesCircle = {
+    0.0f, 0.0f, 0.0f,
+};
+vector<int> indicesCircle = {};
+
+float angle = 0;
+int i = 0;
+
+void setVerticesOfCircle(int n){
+  while(i<=n){
+    i += 1;
+    angle += (2*pi)/n;
+    float pcos = cos(angle)/2;
+    float psin = sin(angle)/2;
+
+    verticesCircle.push_back(pcos);
+    verticesCircle.push_back(psin);
+    verticesCircle.push_back(0.0f);
+
+    indicesCircle.push_back(0);
+    indicesCircle.push_back(i);
+    if (i==n){
+      indicesCircle.push_back(1);
+    }else{
+      indicesCircle.push_back(i+1);
+    }
+  }
+  cout << "Vertices: " << verticesCircle.size() / 3 << endl;
+  cout << "Indices: " << indicesCircle.size() << endl;
 };
 
 //Shaders, eles são escritos em uma linguagem própria
@@ -57,7 +95,7 @@ int main(){
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   //Aqui criamos a janela, passando a resolução, nome da janela e nulo para variáveis que não sei o que são
-  GLFWwindow* window = glfwCreateWindow(640, 480, "Teste 2", nullptr, nullptr);
+  GLFWwindow* window = glfwCreateWindow(640, 640, "Teste 2", nullptr, nullptr);
 
   //Isso para o glfw em caso da janela fechar
   if (!window){
@@ -133,11 +171,13 @@ int main(){
   glBindVertexArray(VAO);
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    
+  setVerticesOfCircle(30);
 
   glBufferData(
     GL_ARRAY_BUFFER,
-    sizeof(vertices),
-    vertices,
+    verticesCircle.size() * sizeof(float),
+    verticesCircle.data(),
     GL_STATIC_DRAW
   );
 
@@ -146,8 +186,8 @@ int main(){
 
   glBufferData(
     GL_ELEMENT_ARRAY_BUFFER,
-    sizeof(indices),
-    indices,
+    indicesCircle.size() * sizeof(float),
+    indicesCircle.data(),
     GL_STATIC_DRAW
   );
 
@@ -185,7 +225,7 @@ int main(){
 
     glDrawElements(
       GL_TRIANGLES,
-      21,
+      indicesCircle.size(),
       GL_UNSIGNED_INT,
       0
     );

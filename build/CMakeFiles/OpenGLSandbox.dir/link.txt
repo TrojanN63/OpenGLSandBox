@@ -1,1 +1,1 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/OpenGLSandbox.dir/link.d CMakeFiles/OpenGLSandbox.dir/src/main.cpp.o CMakeFiles/OpenGLSandbox.dir/external/src/gl.c.o -o OpenGLSandbox  /usr/local/lib/libglfw3.a /usr/lib/x86_64-linux-gnu/librt.a -lm -ldl
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/OpenGLSandbox.dir/link.d CMakeFiles/OpenGLSandbox.dir/src/main.cpp.o CMakeFiles/OpenGLSandbox.dir/external/src/gl.c.o -o OpenGLSandbox  /usr/local/lib/libglfw3.a /usr/lib/librt.a -lm -ldl
