@@ -5,20 +5,23 @@
 
 //definição dos vértices
 float vertices[] = {
-  -0.5f, -0.5f, 0.0f,
-  0.5, -0.5, 0.0f,
-  -0.5f, 0.5f, 0.0f,
-
-
-  //0.5, -0.5, 0.0f, vértice repetido
-  //-0.5f, 0.5f, 0.0f, vértice repetido
-  0.5f, 0.5f, 0.0f
+  -0.25f, 0.43f, 0.0f,
+  0.25f, 0.43f, 0.0f,
+  0.0f, 0.0f, 0.0f,
+  -0.5f, 0.0f, 0.0f,
+  -0.25f, -0.43f, 0.0f,
+  0.25f, -0.43f, 0.0f,
+  0.5f, 0.0f, 0.0f,
 };
 
 //Agora vem os índices para fazer o EBO, onde eu vou economizar vértice
 unsigned int indices[] = {
   0, 1, 2,
-  1, 2, 3
+  0, 2, 3,
+  2, 3, 4,
+  2, 4, 5,
+  2, 5, 6,
+  1, 2, 6
 };
 
 //Shaders, eles são escritos em uma linguagem própria
@@ -182,7 +185,7 @@ int main(){
 
     glDrawElements(
       GL_TRIANGLES,
-      6,
+      21,
       GL_UNSIGNED_INT,
       0
     );
