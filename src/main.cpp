@@ -6,7 +6,7 @@
 #include <vector>
 
 using namespace std;
-//Callback
+
 bool commandMode = false;
 string commandBuffer;
 int newN = 10;
@@ -17,7 +17,12 @@ float colorR;
 float colorG;
 float colorB;
 bool hexChange = false;
+float offset = 0;
 
+//Obtendo o valor de pi
+const double pi = 4 * atan(1);
+
+//Callback dos caracteres
 void character_callback(GLFWwindow* window, unsigned int codepoint){
   if (static_cast<char>(codepoint)==':'){
     commandMode = true;
@@ -61,6 +66,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
       colorB = stoi(commandBuffer.substr(4,2), nullptr, 16);
       hexChange = true; 
     }
+    if (commandBuffer.at(0)=='r'){
+      commandBuffer.erase(0,1);
+      offset += stof(commandBuffer)*pi;
+      needUpdate = true;
+    }
     commandMode = false;
   }
 }
@@ -85,16 +95,13 @@ unsigned int indices[] = {
   1, 2, 6
 };
 
-//Obtendo o valor de pi
-const double pi = 4 * atan(1);
-
 //Vértices e índices do círculo aproximado, inicialmente só com o centro
 vector<float> verticesCircle = {
     0.0f, 0.0f, 0.0f,
 };
 vector<int> indicesCircle = {};
 
-float angle = 0;
+float angle = offset;
 int i = 0;
 
 void setVerticesOfCircle(int n){
@@ -309,7 +316,7 @@ int main(){
       verticesCircle.push_back(0.0f);
       indicesCircle.clear();
 
-      angle = 0;
+      angle = offset;
       i = 0;
 
       setVerticesOfCircle(newN);
