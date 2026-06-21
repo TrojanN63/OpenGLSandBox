@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <cmath>
 #include <vector>
+#include "../../engine/FileUtils.hpp"
+#include "../../engine/Shader.hpp"
 
 using namespace std;
 
@@ -127,29 +129,6 @@ void setVerticesOfCircle(int n){
   cout << "Indices: " << indicesCircle.size() << endl;
 };
 
-//Shaders, eles são escritos em uma linguagem própria
-const char* vertexShaderSource = R"(
-#version 330 core
-layout (location = 0) in vec3 aPos;
-
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-}
-)";
-
-const char* fragmentShaderSource = R"(
-#version 330 core
-out vec4 FragColor;
-
-uniform vec3 objectColor;
-
-void main()
-{
-    FragColor = vec4(objectColor, 1.0);
-}
-)";
-
 int main(){
   //Isso inicia o glfw
   if (!glfwInit()){
@@ -196,46 +175,20 @@ int main(){
 
   //Aqui ele cria os shaders de fato
 
-  GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-  glShaderSource(
-    vertexShader,
-    1,
-    &vertexShaderSource,
-    nullptr
+  Shader shader(
+    "../assets/shaders/basic.vert",
+    "../assets/shaders/basic.frag"
   );
-
-  glCompileShader(vertexShader);
-
-  GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-  glShaderSource(
-    fragmentShader,
-    1,
-    &fragmentShaderSource,
-    nullptr
-  );
-
-  glCompileShader(fragmentShader);
-
-  GLuint shaderProgram = glCreateProgram();
-
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
-
-  glLinkProgram(shaderProgram);
 
   //Linkando a cor
-  GLint colorLocation = glGetUniformLocation(shaderProgram, "objectColor");
 
-  //Cores
-  glUseProgram(shaderProgram);
-  
-  glUniform3f(
-    colorLocation,
-    1,
-    1,
-    1
+  shader.use();
+
+  shader.setVec3(
+    "objectColor",
+    1.0f,
+    1.0f,
+    1.0f
   );
   //Buffers
 
@@ -286,8 +239,10 @@ int main(){
 
   //Leitura dos dados
   glfwSetCharCallback(window, character_callback);
+
   //Teclas especiais
   glfwSetKeyCallback(window, key_callback);
+
   //Esse aqui é o loop principal que opera enquanto a janela estiver aberta
   while (!glfwWindowShouldClose(window)){
     //Atualização
@@ -300,11 +255,12 @@ int main(){
     }
 
     if (hexChange){
-      glUniform3f(
-        colorLocation,
-        colorR/255,
-        colorG/255,
-        colorB/255
+      shader.use();
+      shader.setVec3(
+        "objectColor",
+        colorR / 255.0f,
+        colorG / 255.0f,
+        colorB / 255.0f
       );
       hexChange = false;
     }
@@ -359,7 +315,7 @@ int main(){
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glUseProgram(shaderProgram);
+    shader.use();
 
     glBindVertexArray(VAO);
 
@@ -377,11 +333,6 @@ int main(){
   //Limpando os buffers
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
-
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
-
-  glDeleteProgram(shaderProgram);
 
   glfwDestroyWindow(window);
   glfwTerminate();

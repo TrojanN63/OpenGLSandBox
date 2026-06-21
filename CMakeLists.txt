@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD 20)
 find_package(glfw3 REQUIRED)
 
 add_executable(OpenGLSandbox
-    src/main.cpp
+    examples/polygonGenerator/main.cpp
+    engine/FileUtils.cpp
+    engine/Shader.cpp
     external/src/gl.c
 )
 
