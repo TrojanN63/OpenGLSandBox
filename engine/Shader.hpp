@@ -17,4 +17,9 @@ class Shader{
       float y,
       float z
     );
+
+    void setInt(
+      const std::string& name,
+      int value
+    );
 };

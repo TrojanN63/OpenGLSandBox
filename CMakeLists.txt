@@ -6,17 +6,33 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(glfw3 REQUIRED)
 
-add_executable(OpenGLSandbox
+add_executable(PolygonGenerator
     examples/polygonGenerator/main.cpp
     engine/FileUtils.cpp
     engine/Shader.cpp
     external/src/gl.c
 )
 
-target_include_directories(OpenGLSandbox PRIVATE
+add_executable(TextureQuad
+    examples/textureQuad/main.cpp
+    engine/FileUtils.cpp
+    engine/Shader.cpp
+    engine/stb_image.cpp
+    external/src/gl.c
+)
+
+target_include_directories(PolygonGenerator PRIVATE
     external/include
 )
 
-target_link_libraries(OpenGLSandbox PRIVATE
+target_link_libraries(PolygonGenerator PRIVATE
+    glfw
+)
+
+target_include_directories(TextureQuad PRIVATE
+    external/include
+)
+
+target_link_libraries(TextureQuad PRIVATE
     glfw
 )
