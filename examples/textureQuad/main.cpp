@@ -5,6 +5,7 @@
 #include<vector>
 #include<../../engine/Shader.hpp>
 #include<stb/stb_image.h>
+#include<../../engine/Mesh.hpp>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ int main(){
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWwindow* window = glfwCreateWindow(128, 128, "Render", nullptr, nullptr);
+  GLFWwindow* window = glfwCreateWindow(256, 256, "Render", nullptr, nullptr);
 
   if (!window){
     glfwTerminate();
@@ -52,18 +53,12 @@ int main(){
     "../assets/shaders/texture.frag"
   );
 
-  GLuint VAO;
-  GLuint VBO;
-  GLuint EBO;
   GLuint texture;
+  GLuint offset = glGetUniformLocation(shader.ID, "offset");
+  GLuint scale = glGetUniformLocation(shader.ID, "scale");
+  GLuint angle = glGetUniformLocation(shader.ID, "angle");
 
-  glGenVertexArrays(1, &VAO);
-  glGenBuffers(1, &VBO);
-  glGenBuffers(1, &EBO);
   glGenTextures(1, &texture);
-
-  glBindVertexArray(VAO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
   glTexParameteri(
     GL_TEXTURE_2D,
@@ -93,6 +88,8 @@ int main(){
   int height;
   int channels;
 
+  Mesh quad(vertices, indices);
+
   GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
   stbi_set_flip_vertically_on_load(true);
   unsigned char* data = stbi_load("../assets/textures/hand.png", &width, &height, &channels, 0);
@@ -108,22 +105,6 @@ int main(){
   glGenerateMipmap(GL_TEXTURE_2D);
 
   stbi_image_free(data);
-
-  glBufferData(
-    GL_ARRAY_BUFFER,
-    vertices.size() * sizeof(float),
-    vertices.data(),
-    GL_STATIC_DRAW
-  );
-
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-  glBufferData(
-    GL_ELEMENT_ARRAY_BUFFER,
-    indices.size() * sizeof(int),
-    indices.data(),
-    GL_STATIC_DRAW
-  );
 
   glVertexAttribPointer(
     0,
@@ -169,10 +150,24 @@ int main(){
       texture
     );
 
+    float x = sin(glfwGetTime())*0.5f;
+    float z = abs(sin(glfwGetTime()));
+    float a = glfwGetTime();
+    glUniform2f(
+      offset,
+      x+0.3f,
+      0.0f
+    );
+    glUniform1f(
+      scale,
+      z
+    );
+    glUniform1f(
+      angle,
+      a
+    );
 
-    glBindVertexArray(VAO);
-
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    quad.draw(6);
     
     glfwSwapBuffers(window);
     glfwPollEvents();

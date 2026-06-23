@@ -18,6 +18,7 @@ add_executable(TextureQuad
     engine/FileUtils.cpp
     engine/Shader.cpp
     engine/stb_image.cpp
+    engine/Mesh.cpp
     external/src/gl.c
 )
 

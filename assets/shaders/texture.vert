@@ -5,7 +5,30 @@ layout(location = 1) in vec2 aTexCoord;
 
 out vec2 TexCoord;
 
+uniform vec2 offset;
+uniform float scale;
+uniform float angle;
+
 void main(){
-  gl_Position = vec4(aPos, 1.0);
+  vec3 tPos = aPos;
+
+  tPos *= scale;
+  tPos.x += offset.x;
+  tPos.y += offset.y;
+
+  float c = cos(angle);
+  float s = sin(angle);
+
+  tPos = vec3(
+    tPos.x * c - tPos.y * s,
+    tPos.x * s + tPos.y * c,
+    tPos.z
+  );
+
+  gl_Position = vec4(
+    tPos,
+    1.0
+  );
+
   TexCoord = aTexCoord;
 }
