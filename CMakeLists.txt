@@ -20,6 +20,7 @@ add_executable(TextureQuad
     engine/stb_image.cpp
     engine/Mesh.cpp
     engine/Texture.cpp
+    engine/Input.cpp
     external/src/gl.c
 )
 
