@@ -8,11 +8,21 @@ public:
   GLuint VAO;
   GLuint VBO;
   GLuint EBO;
+  int indexCount;
 
   Mesh(
     const std::vector<float>& vertices,
     const std::vector<unsigned int>& indices
   );
 
-  void draw(int);
+  void addAttribute(
+    GLuint index,
+    GLuint size,
+    GLsizei stride,
+    size_t offset
+  );
+
+  void finish();
+
+  void draw();
 };

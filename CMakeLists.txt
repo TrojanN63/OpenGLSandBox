@@ -19,6 +19,7 @@ add_executable(TextureQuad
     engine/Shader.cpp
     engine/stb_image.cpp
     engine/Mesh.cpp
+    engine/Texture.cpp
     external/src/gl.c
 )
 

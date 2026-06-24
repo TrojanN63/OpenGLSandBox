@@ -4,7 +4,7 @@ Mesh::Mesh(
   const std::vector<float>& vertices,
   const std::vector<unsigned int>& indices
 ){
-  int indexCount = indices.size();
+  indexCount = indices.size();
 
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
@@ -33,7 +33,7 @@ Mesh::Mesh(
     GL_STATIC_DRAW
   );
 }
-void Mesh::draw(int indexCount)
+void Mesh::draw()
 {
   glBindVertexArray(VAO);
 
@@ -43,4 +43,27 @@ void Mesh::draw(int indexCount)
     GL_UNSIGNED_INT,
     0
   );
+}
+void Mesh::addAttribute(
+    GLuint index,
+    GLuint size,
+    GLsizei stride,
+    size_t offset
+){
+  glBindVertexArray(VAO);
+
+  glVertexAttribPointer(
+    index,
+    size,
+    GL_FLOAT,
+    GL_FALSE,
+    stride,
+    (void*)offset
+  );
+
+  glEnableVertexAttribArray(index);
+}
+void Mesh::finish(){
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 }

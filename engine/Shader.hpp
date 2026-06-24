@@ -22,4 +22,15 @@ class Shader{
       const std::string& name,
       int value
     );
+
+    void setVec2(
+      const std::string& name,
+      float x,
+      float y
+    );
+
+    void setFloat(
+      const std::string& name,
+      float f
+    );
 };
