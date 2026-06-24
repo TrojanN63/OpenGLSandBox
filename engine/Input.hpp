@@ -7,6 +7,8 @@ class Input{
   public:
     Input();
 
+    static char command;
+
     static void callback(GLFWwindow* window, unsigned int codepoint);
 
     void setcallback(GLFWwindow* window);

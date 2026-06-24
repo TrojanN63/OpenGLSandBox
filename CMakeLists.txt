@@ -24,6 +24,17 @@ add_executable(TextureQuad
     external/src/gl.c
 )
 
+add_executable(Minigame
+  examples/minigame/main.cpp
+    engine/FileUtils.cpp
+    engine/Shader.cpp
+    engine/stb_image.cpp
+    engine/Mesh.cpp
+    engine/Texture.cpp
+    engine/Input.cpp
+    external/src/gl.c
+)
+
 target_include_directories(PolygonGenerator PRIVATE
     external/include
 )
@@ -37,5 +48,13 @@ target_include_directories(TextureQuad PRIVATE
 )
 
 target_link_libraries(TextureQuad PRIVATE
+    glfw
+)
+
+target_include_directories(Minigame PRIVATE
+    external/include
+)
+
+target_link_libraries(Minigame PRIVATE
     glfw
 )
