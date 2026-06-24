@@ -77,7 +77,6 @@ int main(){
   GLenum err;
 
   Input input;
-  input.setcallback(window);
 
   while((err = glGetError()) != GL_NO_ERROR) {
     std::cout << "OpenGL error: " << err << std::endl;

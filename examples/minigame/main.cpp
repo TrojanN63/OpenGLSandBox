@@ -76,16 +76,27 @@ int main(){
   
   GLenum err;
 
-  Input input;
-  input.setcallback(window);
+  Input input; //inicializa o input
 
   while((err = glGetError()) != GL_NO_ERROR) {
     std::cout << "OpenGL error: " << err << std::endl;
   }
 
   float x = 0;
+  float y = 1;
+
   float hspd = 0;
+  float vspd = 0;
+  
   int move = 0;
+  
+  float grvt = 0.01f;
+  float jumpForce = 0.05f;
+  float spd = 0.02f;
+
+  bool left;
+  bool right;
+  bool jump;
 
   while(!glfwWindowShouldClose(window)){ //loop principal enquanto está aberta a janela
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f); //cor de fundo
@@ -98,22 +109,32 @@ int main(){
     shader.setInt("texture1", 0); //usando texture
 
     playa.bind(0);
-    
-    float spd = 0.02f;
 
-    if (input.command=='a') {
-      move=-1;
-    }else if (input.command=='d'){
-      move=1;
-    }else{
-      move=0;
-    }
+    //definindo inputs
+    right = input.keyPressed(window, GLFW_KEY_D);
+    left = input.keyPressed(window, GLFW_KEY_A);
+    jump = input.keyPressed(window, GLFW_KEY_SPACE);
+
+    move = right - left;
 
     hspd = move * spd;
 
     x+=hspd;
 
-    shader.setVec2("offset", x, 0); //efetivamente mudando o transform
+    if (jump && y<0.1) vspd+=jumpForce;
+
+    if (y>0) vspd-=grvt;
+
+    if (y+vspd < 0){
+      if (y+(vspd/abs(vspd))/100 > 0){
+        y-=0.01f;
+      }
+        y, vspd = 0, 0;
+    }
+
+    y+=vspd;
+
+    shader.setVec2("offset", x, y); //efetivamente mudando o transform
 
     quad.draw(); //desenhando
     
