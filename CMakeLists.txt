@@ -35,6 +35,14 @@ add_executable(Minigame
     external/src/gl.c
 )
 
+add_executable(Cube
+  examples/cube/main.cpp
+    engine/FileUtils.cpp
+    engine/Shader.cpp
+    engine/Mesh.cpp
+    external/src/gl.c
+)
+
 target_include_directories(PolygonGenerator PRIVATE
     external/include
 )
@@ -56,5 +64,13 @@ target_include_directories(Minigame PRIVATE
 )
 
 target_link_libraries(Minigame PRIVATE
+    glfw
+)
+
+target_include_directories(Cube PRIVATE
+    external/include
+)
+
+target_link_libraries(Cube PRIVATE
     glfw
 )
