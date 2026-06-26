@@ -11,8 +11,8 @@ public:
   int indexCount;
 
   Mesh(
-    const std::vector<float>& vertices,
-    const std::vector<unsigned int>& indices
+    float sizex,
+    float sizey
   );
 
   void addAttribute(

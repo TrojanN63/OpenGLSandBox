@@ -6,11 +6,12 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(glfw3 REQUIRED)
 
+#[[
 add_executable(PolygonGenerator
-    examples/polygonGenerator/main.cpp
-    engine/FileUtils.cpp
-    engine/Shader.cpp
-    external/src/gl.c
+   examples/polygonGenerator/main.cpp
+   engine/FileUtils.cpp
+   engine/Shader.cpp
+   external/src/gl.c
 )
 
 add_executable(TextureQuad
@@ -24,7 +25,9 @@ add_executable(TextureQuad
     external/src/gl.c
 )
 
-add_executable(Minigame
+]]
+
+add_executable(Minigame.exe
   examples/minigame/main.cpp
     engine/FileUtils.cpp
     engine/Shader.cpp
@@ -32,8 +35,11 @@ add_executable(Minigame
     engine/Mesh.cpp
     engine/Texture.cpp
     engine/Input.cpp
+    engine/gameObject.cpp
     external/src/gl.c
 )
+
+#[[
 
 add_executable(Cube
   examples/cube/main.cpp
@@ -42,6 +48,8 @@ add_executable(Cube
     engine/Mesh.cpp
     external/src/gl.c
 )
+
+
 
 target_include_directories(PolygonGenerator PRIVATE
     external/include
@@ -58,15 +66,17 @@ target_include_directories(TextureQuad PRIVATE
 target_link_libraries(TextureQuad PRIVATE
     glfw
 )
+]]
 
-target_include_directories(Minigame PRIVATE
+target_include_directories(Minigame.exe PRIVATE
     external/include
 )
 
-target_link_libraries(Minigame PRIVATE
+target_link_libraries(Minigame.exe PRIVATE
     glfw
 )
 
+#[[
 target_include_directories(Cube PRIVATE
     external/include
 )
@@ -74,3 +84,4 @@ target_include_directories(Cube PRIVATE
 target_link_libraries(Cube PRIVATE
     glfw
 )
+]]

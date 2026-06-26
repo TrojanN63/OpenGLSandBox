@@ -1,9 +1,20 @@
 #include "Mesh.hpp"
 
 Mesh::Mesh(
-  const std::vector<float>& vertices,
-  const std::vector<unsigned int>& indices
+  float sizex,
+  float sizey
 ){
+  const std::vector<float>& vertices = {
+    -sizex/2,  sizey/2, 0.0f, 0.0f, 1.0f,
+    -sizex/2, -sizey/2, 0.0f, 0.0f, 0.0f,
+    sizex/2,  sizey/2, 0.0f, 1.0f, 1.0f,
+    sizex/2, -sizey/2, 0.0f, 1.0f, 0.0f
+  };
+  const std::vector<unsigned int>& indices = {
+    0,1,3,
+    0,3,2
+  };
+  
   indexCount = indices.size();
 
   glGenVertexArrays(1, &VAO);

@@ -7,20 +7,9 @@
 #include<../../engine/Mesh.hpp>
 #include<../../engine/Texture.hpp>
 #include<../../engine/Input.hpp>
+#include<../../engine/gameObject.hpp>
 
 using namespace std;
-
-vector<float> vertices = { //definição de vértices
-  -0.1f, 0.1f, 0.0f, 0.0f, 1.0f,
-  -0.1f, -0.1f, 0.0f, 0.0f, 0.0f,
-  0.1f, 0.1f, 0.0f, 1.0f, 1.0f,
-  0.1f, -0.1f ,0.0f, 1.0f, 0.0f
-};
-
-vector<unsigned int> indices = { //definição de índices que formas os triângulos
-  0, 1, 3,
-  0, 3, 2
-};
 
 int main(){
   if (!glfwInit()){ //iniciando glfw
@@ -47,40 +36,15 @@ int main(){
     return -1;
   }
 
-  Shader shader( //lendo os shaders
+  gameObject playa(
     "../assets/shaders/texture.vert",
-    "../assets/shaders/texture.frag"
+    "../assets/shaders/texture.frag",
+    "../assets/textures/playa.png",
+    0.2f,
+    0.2f
   );
-
-  Texture playa("../assets/textures/playa.png"); //lendo a textura
-  GLint offset = glGetUniformLocation(shader.ID, "offset"); //pegando as variáveis do transform
-  GLint scale = glGetUniformLocation(shader.ID, "scale");
-  GLint angle = glGetUniformLocation(shader.ID, "angle");
-
-  Mesh quad(vertices, indices); //formando a malha
-
-  quad.addAttribute(
-    0,
-    3,
-    5 * sizeof(float),
-    0
-  );
-  quad.addAttribute(
-    1,
-    2,
-    5 * sizeof(float),
-    3 * sizeof(float)
-  );
-  
-  quad.finish();
-  
-  GLenum err;
 
   Input input; //inicializa o input
-
-  while((err = glGetError()) != GL_NO_ERROR) {
-    std::cout << "OpenGL error: " << err << std::endl;
-  }
 
   float x = 0;
   float y = 1;
@@ -108,13 +72,12 @@ int main(){
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f); //cor de fundo
     glClear(GL_COLOR_BUFFER_BIT);
 
-    shader.use(); //usando shader
-    //shader.setVec2("offset", 0.0f, 0.0f);
-    shader.setFloat("scale", 1.0f);
-    shader.setFloat("angle", 0.0f);
-    shader.setInt("texture1", 0); //usando texture
+    playa.ShaderUse();
 
-    playa.bind(0);
+    playa.Scale(1.0f);
+    playa.Rotation(0.0f);
+
+    playa.Bind(0);
 
     //definindo inputs
     right = input.keyPressed(window, GLFW_KEY_D);
@@ -140,9 +103,9 @@ int main(){
 
     y+=vspd;
 
-    shader.setVec2("offset", x, y); //efetivamente mudando o transform
+    playa.Position(x, y); //efetivamente mudando o transform
 
-    quad.draw(); //desenhando
+    playa.Draw(); //desenhando
     
     glfwSwapBuffers(window);
     glfwPollEvents();
