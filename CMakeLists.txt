@@ -47,6 +47,12 @@ add_executable(Minigame
   examples/minigame/main.cpp
 )
 
+target_link_options(Minigame PRIVATE
+    -static
+    -static-libgcc
+    -static-libstdc++
+)
+
 target_include_directories(Minigame PRIVATE
     external/include
 )
