@@ -12,6 +12,8 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
+add_subdirectory(external/glfw)
+
 # GLAD
 add_library(glad STATIC
     external/src/gl.c
