@@ -7,12 +7,6 @@
 #include "Mesh.hpp"
 #include <vector>
 
-struct Transform {
-  float x, y;
-  float angle;
-  float scale;
-};
-
 class gameObject{
   public:
 

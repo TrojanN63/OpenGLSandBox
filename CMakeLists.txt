@@ -3,77 +3,56 @@ cmake_minimum_required(VERSION 3.20)
 project(OpenGLSandbox)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(glfw3 REQUIRED)
+# GLFW
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
-#[[
-add_executable(PolygonGenerator
-   examples/polygonGenerator/main.cpp
-   engine/FileUtils.cpp
-   engine/Shader.cpp
-   external/src/gl.c
-)
-
-add_executable(TextureQuad
-    examples/textureQuad/main.cpp
-    engine/FileUtils.cpp
-    engine/Shader.cpp
-    engine/stb_image.cpp
-    engine/Mesh.cpp
-    engine/Texture.cpp
-    engine/Input.cpp
+# GLAD
+add_library(glad STATIC
     external/src/gl.c
 )
 
-]]
+target_include_directories(glad PUBLIC
+    external/include
+)
+
+# ENGINE
+file(GLOB ENGINE_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/engine/*.cpp"
+)
+
+add_library(engine STATIC
+    ${ENGINE_SOURCES}
+)
+
+target_include_directories(engine PUBLIC
+  external/include
+  engine
+  include
+)
+
+target_link_libraries(engine PUBLIC
+  glad
+  glfw
+)
 
 add_executable(Minigame.exe
   examples/minigame/main.cpp
-    engine/FileUtils.cpp
-    engine/Shader.cpp
-    engine/stb_image.cpp
-    engine/Mesh.cpp
-    engine/Texture.cpp
-    engine/Input.cpp
-    engine/gameObject.cpp
-    external/src/gl.c
 )
-
-#[[
-
-add_executable(Cube
-  examples/cube/main.cpp
-    engine/FileUtils.cpp
-    engine/Shader.cpp
-    engine/Mesh.cpp
-    external/src/gl.c
-)
-
-
-
-target_include_directories(PolygonGenerator PRIVATE
-    external/include
-)
-
-target_link_libraries(PolygonGenerator PRIVATE
-    glfw
-)
-
-target_include_directories(TextureQuad PRIVATE
-    external/include
-)
-
-target_link_libraries(TextureQuad PRIVATE
-    glfw
-)
-]]
 
 target_include_directories(Minigame.exe PRIVATE
     external/include
 )
 
 target_link_libraries(Minigame.exe PRIVATE
-    glfw
+  engine
+  glfw
+  glad
 )
 
 #[[
