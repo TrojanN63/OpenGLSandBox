@@ -44,12 +44,24 @@ target_link_libraries(engine PUBLIC
 add_executable(Minigame.exe
   examples/minigame/main.cpp
 )
+add_executable(Minigame
+  examples/minigame/main.cpp
+)
 
 target_include_directories(Minigame.exe PRIVATE
     external/include
 )
 
 target_link_libraries(Minigame.exe PRIVATE
+  engine
+  glfw
+  glad
+)
+target_include_directories(Minigame PRIVATE
+    external/include
+)
+
+target_link_libraries(Minigame PRIVATE
   engine
   glfw
   glad

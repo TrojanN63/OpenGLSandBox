@@ -19,6 +19,7 @@ int main(){
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); //configurando glfw
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHintString(GLFW_WAYLAND_APP_ID, "mago-dava");
 
   GLFWwindow* window = glfwCreateWindow(640, 640, "Games Dava Jonas", nullptr, nullptr); //criando e iniciando janela
 
