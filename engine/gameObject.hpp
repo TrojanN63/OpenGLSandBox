@@ -50,4 +50,9 @@ class gameObject{
 
   void ShaderUse();
 
+  void UpdateTex(
+    const std::string& path,
+    unsigned int unit
+  );
+
 };

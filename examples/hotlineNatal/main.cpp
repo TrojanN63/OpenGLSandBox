@@ -3,9 +3,6 @@
 #include<GLFW/glfw3.h>
 #include<cmath>
 #include<vector>
-#include<../../engine/Shader.hpp>
-#include<../../engine/Mesh.hpp>
-#include<../../engine/Texture.hpp>
 #include<../../engine/Input.hpp>
 #include<../../engine/gameObject.hpp>
 
@@ -70,6 +67,10 @@ int main(){
   double mousex;
   double mousey;
 
+  double time;
+
+  double punchTime;
+
   glEnable(GL_BLEND);
 
   glBlendFunc(
@@ -106,15 +107,25 @@ int main(){
     hspd = movex * spd;
     vspd = movey * spd;
 
+    time = glfwGetTime();
+
     y+=vspd;
     x+=hspd;
 
     if (punch and canpunch){
-      cout << "Soco" << endl;
+      xdemon.UpdateTex("../assets/textures/xdemon/punch0.png", 0);
+      punchTime = time;
       canpunch = false;
     }
     if (releasePunch){
       canpunch = true;
+    }
+
+    if (time-punchTime>=0.2){
+      xdemon.UpdateTex("../assets/textures/xdemon/idle.png", 0);
+    }
+    if (time-punchTime>=0.1 and time-punchTime<0.2){
+      xdemon.UpdateTex("../assets/textures/xdemon/punch1.png", 0);
     }
 
     xdemon.Position(x, y);

@@ -61,3 +61,28 @@ void Texture::bind(unsigned int unit)
     ID
   );
 }
+void Texture::updateTex(const std::string& path, unsigned int unit){
+  int width;
+  int height;
+  int channels;
+
+  unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+
+  if (!data) {
+    std::cout << "Falha ao carregar textura\n";
+  }
+
+  GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  stbi_image_free(data);
+
+  glActiveTexture(GL_TEXTURE0 + unit);
+  glBindTexture(
+    GL_TEXTURE_2D,
+    ID
+  );
+}

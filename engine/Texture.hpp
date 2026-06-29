@@ -12,4 +12,5 @@ public:
   );
 
   void bind(unsigned int);
+  void updateTex(const std::string& path, unsigned int);
 };

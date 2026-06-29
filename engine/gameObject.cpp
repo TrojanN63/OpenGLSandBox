@@ -73,3 +73,6 @@ void gameObject::Bind(unsigned int unit){
 void gameObject::ShaderUse(){
   shader.use();
 };
+void gameObject::UpdateTex(const std::string& path, unsigned int unit){
+  sprite.updateTex(path, unit);
+};
