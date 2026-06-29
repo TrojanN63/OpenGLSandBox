@@ -12,10 +12,6 @@ uniform float angle;
 void main(){
   vec3 tPos = aPos;
 
-  tPos *= scale;
-  tPos.x += offset.x;
-  tPos.y += offset.y;
-
   float c = cos(angle);
   float s = sin(angle);
 
@@ -24,6 +20,10 @@ void main(){
     tPos.x * s + tPos.y * c,
     tPos.z
   );
+
+  tPos *= scale;
+  tPos.x += offset.x;
+  tPos.y += offset.y;
 
   gl_Position = vec4(
     tPos,
