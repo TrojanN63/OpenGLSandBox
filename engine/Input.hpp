@@ -8,5 +8,6 @@ class Input{
     Input();
 
     bool keyPressed(GLFWwindow* window, int key);
+    void mousePos(GLFWwindow* window, double &xpos, double &ypos);
 };
 

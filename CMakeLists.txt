@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.20)
 project(OpenGLSandbox)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # GLFW
@@ -43,14 +42,9 @@ target_link_libraries(engine PUBLIC
   glfw
 )
 
+# JOGOS
 add_executable(Minigame
   examples/minigame/main.cpp
-)
-
-target_link_options(Minigame PRIVATE
-    -static
-    -static-libgcc
-    -static-libstdc++
 )
 
 target_include_directories(Minigame PRIVATE
@@ -59,16 +53,23 @@ target_include_directories(Minigame PRIVATE
 
 target_link_libraries(Minigame PRIVATE
   engine
-  glfw
-  glad
 )
 
-#[[
-target_include_directories(Cube PRIVATE
+add_executable(HotlineNatal
+  examples/hotlineNatal/main.cpp
+)
+
+target_include_directories(HotlineNatal PRIVATE
     external/include
 )
 
-target_link_libraries(Cube PRIVATE
-    glfw
+target_link_libraries(HotlineNatal PRIVATE
+  engine
 )
-]]
+
+if (MINGW)
+    target_link_options(HotlineNatal PRIVATE
+        -static-libgcc
+        -static-libstdc++
+    )
+endif()
