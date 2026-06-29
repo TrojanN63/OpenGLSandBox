@@ -63,6 +63,9 @@ int main(){
   bool right;
   bool up;
   bool down;
+  bool punch;
+  bool releasePunch;
+  bool canpunch = true;
 
   double mousex;
   double mousey;
@@ -87,8 +90,11 @@ int main(){
     left = input.keyPressed(window, GLFW_KEY_A);
     up = input.keyPressed(window, GLFW_KEY_W);
     down = input.keyPressed(window, GLFW_KEY_S);
-    input.mousePos(window, mousex, mousey);
+    punch = input.mouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+    releasePunch = input.mouseButton(window, GLFW_MOUSE_BUTTON_LEFT, GLFW_RELEASE);
 
+    input.mousePos(window, mousex, mousey);
+    
     movex = right - left;
     movey = up - down;
 
@@ -102,6 +108,14 @@ int main(){
 
     y+=vspd;
     x+=hspd;
+
+    if (punch and canpunch){
+      cout << "Soco" << endl;
+      canpunch = false;
+    }
+    if (releasePunch){
+      canpunch = true;
+    }
 
     xdemon.Position(x, y);
     xdemon.Rotation(angle-2*atan(1));

@@ -9,5 +9,6 @@ class Input{
 
     bool keyPressed(GLFWwindow* window, int key);
     void mousePos(GLFWwindow* window, double &xpos, double &ypos);
+    bool mouseButton(GLFWwindow* window, int button, int action=GLFW_PRESS);
 };
 
