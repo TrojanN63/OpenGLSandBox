@@ -6,7 +6,7 @@ layout(location = 1) in vec2 aTexCoord;
 out vec2 TexCoord;
 
 uniform vec2 offset;
-uniform float scale;
+uniform vec2 scale;
 uniform float angle;
 
 void main(){
@@ -21,7 +21,9 @@ void main(){
     tPos.z
   );
 
-  tPos *= scale;
+  tPos.x *= scale.x;
+  tPos.y *= scale.y;
+
   tPos.x += offset.x;
   tPos.y += offset.y;
 

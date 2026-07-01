@@ -78,7 +78,10 @@ int main(){
   };
   int frame = 0;
   bool animation = false;
-  double frameDur = 0.1;
+  double frameDur = 0.05;
+
+  float xsize = 1.0f;
+  float ysize = 1.0f;
 
   glEnable(GL_BLEND);
 
@@ -91,8 +94,6 @@ int main(){
     glClear(GL_COLOR_BUFFER_BIT);
 
     xdemon.ShaderUse();
-
-    xdemon.Scale(1.0f);
 
     xdemon.Bind(0);
 
@@ -122,6 +123,7 @@ int main(){
     x+=hspd;
 
     if (punch and canpunch){
+      xsize*=-1;
       animation = true;
       punchTime = time;
       canpunch = false;
@@ -144,7 +146,8 @@ int main(){
     }
 
     xdemon.Position(x, y);
-    xdemon.Rotation(angle-2*atan(1));
+    xdemon.Rotation((angle-2*atan(1))*xsize);
+    xdemon.Scale(xsize, ysize);
 
     xdemon.Draw();
     

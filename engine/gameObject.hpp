@@ -41,7 +41,8 @@ class gameObject{
   );
 
   void Scale(
-    float scale
+    float x,
+    float y
   );
 
   void Bind(

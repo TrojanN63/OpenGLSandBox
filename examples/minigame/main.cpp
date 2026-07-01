@@ -75,7 +75,7 @@ int main(){
 
     playa.ShaderUse();
 
-    playa.Scale(1.0f);
+    playa.Scale(1.0f, 1.0f);
     playa.Rotation(0.0f);
 
     playa.Bind(0);

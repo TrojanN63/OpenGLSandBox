@@ -64,8 +64,8 @@ void gameObject::Draw(){
 void gameObject::Rotation(float angle){
   shader.setFloat("angle", angle);
 };
-void gameObject::Scale(float scale){
-  shader.setFloat("scale", scale);
+void gameObject::Scale(float x, float y){
+  shader.setVec2("scale", x, y);
 };
 void gameObject::Bind(unsigned int unit){
   sprite.bind(unit);
