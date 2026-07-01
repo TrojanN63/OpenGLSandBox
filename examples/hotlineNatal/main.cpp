@@ -71,6 +71,15 @@ int main(){
 
   double punchTime;
 
+  vector<string> frames = {
+    "../assets/textures/xdemon/punch0.png",
+    "../assets/textures/xdemon/punch1.png",
+    "../assets/textures/xdemon/idle.png"
+  };
+  int frame = 0;
+  bool animation = false;
+  double frameDur = 0.1;
+
   glEnable(GL_BLEND);
 
   glBlendFunc(
@@ -113,19 +122,25 @@ int main(){
     x+=hspd;
 
     if (punch and canpunch){
-      xdemon.UpdateTex("../assets/textures/xdemon/punch0.png", 0);
+      animation = true;
       punchTime = time;
       canpunch = false;
     }
     if (releasePunch){
       canpunch = true;
     }
-
-    if (time-punchTime>=0.2){
-      xdemon.UpdateTex("../assets/textures/xdemon/idle.png", 0);
-    }
-    if (time-punchTime>=0.1 and time-punchTime<0.2){
-      xdemon.UpdateTex("../assets/textures/xdemon/punch1.png", 0);
+    
+    if (animation){
+      xdemon.UpdateTex(frames.at(frame), 0);
+      if (time - punchTime >= frameDur){
+        if (frame==frames.size()-1){
+          frame=0;
+          animation=false;
+        }else{
+          frame++;
+        }
+        punchTime = time;
+      }
     }
 
     xdemon.Position(x, y);
