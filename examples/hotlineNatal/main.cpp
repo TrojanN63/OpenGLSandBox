@@ -34,6 +34,13 @@ int main(){
     return -1;
   }
 
+  gameObject wall(
+    "../assets/shaders/texture.vert",
+    "../assets/shaders/texture.frag",
+    "../assets/textures/wall.png",
+    0.2f,
+    0.2f
+  );
   gameObject xdemon(
     "../assets/shaders/texture.vert",
     "../assets/shaders/texture.frag",
@@ -80,8 +87,11 @@ int main(){
   bool animation = false;
   double frameDur = 0.05;
 
-  float xsize = 1.0f;
-  float ysize = 1.0f;
+  float xsize = 2.0f;
+  float ysize = 2.0f;
+
+  float wallx = 0.3;
+  float wally = 0.3;
 
   glEnable(GL_BLEND);
 
@@ -92,6 +102,15 @@ int main(){
   while(!glfwWindowShouldClose(window)){
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    wall.ShaderUse();
+    wall.Bind(0);
+
+    wall.Position(wallx,wally);
+    wall.Scale(1,1);
+    wall.Rotation(0);
+
+    wall.Draw();
 
     xdemon.ShaderUse();
 
@@ -117,13 +136,52 @@ int main(){
     hspd = movex * spd;
     vspd = movey * spd;
 
+    if (movex!=0 and movey!=0){
+      hspd=movex*spd/sqrt(2);
+      vspd=movey*spd/sqrt(2);
+    }
+
     time = glfwGetTime();
+    
+    if (x<wallx){
+      if (x+0.05+hspd>wallx-0.1 and y>wally-0.1-0.05 and y<wally+0.05+0.1){
+        if (x+0.05+(hspd/abs(hspd))/100 < wallx-0.1){
+          x+=(hspd/abs(hspd))/100;
+        }
+        x, hspd = 0,0;
+      }
+    }
+    if (x>wallx){
+      if (x-0.05+hspd<wallx+0.1 and y>wally-0.1-0.05 and y<wally+0.05+0.1){
+        if (x-0.05+(hspd/abs(hspd))/100 > wallx+0.1){
+          x+=(hspd/abs(hspd))/100;
+        }
+        x, hspd = 0,0;
+      }
+    }
+    
+    x+=hspd;
+    
+    if (y<wally){
+      if (y+0.05+vspd>wally-0.1 and x>wallx-0.1-0.05 and x<wallx+0.05+0.1){
+        if (y+0.05+(vspd/abs(vspd))/100 < wally-0.1){
+          y+=(vspd/abs(vspd))/100;
+        }
+        y, vspd = 0,0;
+      }
+    }
+    if (y>wally){
+      if (y-0.05+vspd<wally+0.1 and x>wallx-0.1-0.05 and x<wallx+0.05+0.1){
+        if (y-0.05+(vspd/abs(vspd))/100 > wally+0.1){
+          y+=(vspd/abs(vspd))/100;
+        }
+        y, vspd = 0,0;
+      }
+    }
 
     y+=vspd;
-    x+=hspd;
 
     if (punch and canpunch){
-      xsize*=-1;
       animation = true;
       punchTime = time;
       canpunch = false;
@@ -136,6 +194,7 @@ int main(){
       xdemon.UpdateTex(frames.at(frame), 0);
       if (time - punchTime >= frameDur){
         if (frame==frames.size()-1){
+          xsize*=-1;
           frame=0;
           animation=false;
         }else{
@@ -145,9 +204,9 @@ int main(){
       }
     }
 
-    xdemon.Position(x, y);
-    xdemon.Rotation((angle-2*atan(1))*xsize);
     xdemon.Scale(xsize, ysize);
+    xdemon.Position(x, y);
+    xdemon.Rotation((angle-2*atan(1))*(xsize/abs(xsize)));
 
     xdemon.Draw();
     
