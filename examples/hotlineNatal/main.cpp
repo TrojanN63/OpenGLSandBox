@@ -16,7 +16,7 @@ int main(){
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHintString(GLFW_WAYLAND_APP_ID, "hln");
+  glfwWindowHintString(GLFW_WAYLAND_APP_ID, "HotlineNatal");
 
   GLFWwindow* window = glfwCreateWindow(640, 640, "Hotline Natal", nullptr, nullptr);
 
@@ -75,6 +75,7 @@ int main(){
   double mousey;
 
   double time;
+  double execTime=0;
 
   double punchTime;
 
@@ -158,10 +159,8 @@ int main(){
         }
         x, hspd = 0,0;
       }
-    }
-    
-    x+=hspd;
-    
+    } 
+
     if (y<wally){
       if (y+0.05+vspd>wally-0.1 and x>wallx-0.1-0.05 and x<wallx+0.05+0.1){
         if (y+0.05+(vspd/abs(vspd))/100 < wally-0.1){
@@ -179,7 +178,11 @@ int main(){
       }
     }
 
-    y+=vspd;
+    if (time-execTime >= 0.016){
+      x+=hspd;
+      y+=vspd;
+      execTime=time;
+    }
 
     if (punch and canpunch){
       animation = true;
