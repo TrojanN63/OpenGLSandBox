@@ -6,6 +6,15 @@
 #include "Texture.hpp"
 #include "Mesh.hpp"
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+struct Transform {
+  glm::vec2 position = {0,0};
+  glm::vec2 scale = {0,0};
+  float rotation = 0.0f;
+};
 
 class gameObject{
   public:
@@ -22,9 +31,7 @@ class gameObject{
 
   std::vector<unsigned int> indices;
 
-  GLint offset;
-  GLint scale;
-  GLint angle;
+  Transform transform;
 
   Shader shader;
   Mesh mesh;
@@ -55,5 +62,7 @@ class gameObject{
     const std::string& path,
     unsigned int unit
   );
+
+  void SetProjection(int width, int height);
 
 };

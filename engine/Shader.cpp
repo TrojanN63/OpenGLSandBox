@@ -1,6 +1,9 @@
 #include "Shader.hpp"
 #include "FileUtils.hpp"
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(
     const std::string& vertexPath,
@@ -103,4 +106,15 @@ void Shader::setFloat(
     float f
 ){
   glUniform1f(glGetUniformLocation(ID, name.c_str()), f);
+}
+void Shader::setMat4(
+  const std::string& name,
+  const glm::mat4& matrix
+){
+  glUniformMatrix4fv(
+    glGetUniformLocation(ID, name.c_str()),
+    1,
+    GL_FALSE,
+    glm::value_ptr(matrix)
+  );
 }

@@ -43,32 +43,19 @@ target_link_libraries(engine PUBLIC
 )
 
 # JOGOS
-add_executable(Minigame
-  examples/minigame/main.cpp
+add_executable(expRend
+  examples/pixels/main.cpp
 )
 
-target_include_directories(Minigame PRIVATE
+target_include_directories(expRend PRIVATE
     external/include
 )
 
-target_link_libraries(Minigame PRIVATE
+target_link_libraries(expRend PRIVATE
   engine
 )
-
-add_executable(HotlineNatal
-  examples/hotlineNatal/main.cpp
-)
-
-target_include_directories(HotlineNatal PRIVATE
-    external/include
-)
-
-target_link_libraries(HotlineNatal PRIVATE
-  engine
-)
-
 if (MINGW)
-    target_link_options(HotlineNatal PRIVATE
+  target_link_options(expRend PRIVATE
         -static-libgcc
         -static-libstdc++
     )

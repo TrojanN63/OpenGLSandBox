@@ -44,28 +44,50 @@ gameObject::gameObject(
   while((err = glGetError()) != GL_NO_ERROR) {
     std::cout << "OpenGL error: " << err << std::endl;
   }
-  
-  offset = glGetUniformLocation(shader.ID, "offset");
-  scale = glGetUniformLocation(shader.ID, "scale");
-  angle = glGetUniformLocation(shader.ID, "angle");
  
 };
 void gameObject::Position(
     float x,
     float y
 ){
-  shader.setVec2("offset", x, y);
+  transform.position = {x,y};
 };
 void gameObject::Draw(){
+  glm::mat4 model(1.0f);
+
+  model = glm::translate(
+    model,
+    glm::vec3(
+      transform.position,
+      0.0f
+    )
+  );
+
+  model = glm::rotate(
+    model,
+    transform.rotation,
+    glm::vec3(0,0,1)
+  );
+
+  model = glm::scale(
+    model,
+    glm::vec3(
+      transform.scale,
+      1.0f
+    )
+  );
+
   shader.use();
+  shader.setMat4("model", model);
+
   sprite.bind(0);
   mesh.draw();
 };
 void gameObject::Rotation(float angle){
-  shader.setFloat("angle", angle);
+  transform.rotation = angle;
 };
 void gameObject::Scale(float x, float y){
-  shader.setVec2("scale", x, y);
+  transform.scale = {x, y};
 };
 void gameObject::Bind(unsigned int unit){
   sprite.bind(unit);
@@ -76,3 +98,15 @@ void gameObject::ShaderUse(){
 void gameObject::UpdateTex(const std::string& path, unsigned int unit){
   sprite.updateTex(path, unit);
 };
+void gameObject::SetProjection(int width, int height)
+{
+    glm::mat4 projection = glm::ortho(
+        0.0f,
+        (float)width,
+        (float)height,
+        0.0f
+    );
+
+    shader.use();
+    shader.setMat4("projection", projection);
+}
