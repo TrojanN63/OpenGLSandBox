@@ -41,7 +41,7 @@ class gameObject{
     float x,
     float y
   );
-  void Draw();
+  glm::mat4 GetModelMatrix() const;
 
   void Rotation(
     float angle
@@ -52,17 +52,9 @@ class gameObject{
     float y
   );
 
-  void Bind(
-    unsigned int unit
-  );
-
-  void ShaderUse();
-
   void UpdateTex(
     const std::string& path,
     unsigned int unit
   );
-
-  void SetProjection(int width, int height);
 
 };

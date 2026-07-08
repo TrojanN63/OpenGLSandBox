@@ -5,6 +5,7 @@
 #include<vector>
 #include<../../engine/Input.hpp>
 #include<../../engine/gameObject.hpp>
+#include<../../engine/Render.hpp>
 
 using namespace std;
 
@@ -34,6 +35,8 @@ int main(){
     return -1;
   }
 
+  Render renderer(window);
+
   gameObject wall(
     "../assets/shaders/notNorm.vert",
     "../assets/shaders/texture.frag",
@@ -48,9 +51,6 @@ int main(){
     1.0f,
     1.0f
   );
-
-  wall.SetProjection(640, 480);
-  xdemon.SetProjection(640, 480);
 
   Input input;
 
@@ -104,21 +104,13 @@ int main(){
     GL_ONE_MINUS_SRC_ALPHA
   );
   while(!glfwWindowShouldClose(window)){
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    wall.ShaderUse();
-    wall.Bind(0);
+    renderer.beginFrame();
 
     wall.Position(wallx,wally);
     wall.Scale(64,64);
     wall.Rotation(0);
 
-    wall.Draw();
-
-    xdemon.ShaderUse();
-
-    xdemon.Bind(0);
+    renderer.draw(wall);
 
     right = input.keyPressed(window, GLFW_KEY_D);
     left = input.keyPressed(window, GLFW_KEY_A);
@@ -214,10 +206,9 @@ int main(){
     xdemon.Position(x, y);
     xdemon.Rotation(angle-2*atan(1));
 
-    xdemon.Draw();
-    
-    glfwSwapBuffers(window);
-    glfwPollEvents();
+    renderer.draw(xdemon);
+
+    renderer.endFrame();
   }
 
   return 0;

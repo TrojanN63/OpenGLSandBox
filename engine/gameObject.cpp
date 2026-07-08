@@ -9,7 +9,6 @@
 #include <iostream>
 
 gameObject::gameObject(
-  //Transform transform,
   const std::string& vert,
   const std::string& frag,
   const std::string& spritePath,
@@ -52,7 +51,7 @@ void gameObject::Position(
 ){
   transform.position = {x,y};
 };
-void gameObject::Draw(){
+glm::mat4 gameObject::GetModelMatrix() const {
   glm::mat4 model(1.0f);
 
   model = glm::translate(
@@ -77,11 +76,7 @@ void gameObject::Draw(){
     )
   );
 
-  shader.use();
-  shader.setMat4("model", model);
-
-  sprite.bind(0);
-  mesh.draw();
+  return model;
 };
 void gameObject::Rotation(float angle){
   transform.rotation = angle;
@@ -89,24 +84,6 @@ void gameObject::Rotation(float angle){
 void gameObject::Scale(float x, float y){
   transform.scale = {x, y};
 };
-void gameObject::Bind(unsigned int unit){
-  sprite.bind(unit);
-};
-void gameObject::ShaderUse(){
-  shader.use();
-};
 void gameObject::UpdateTex(const std::string& path, unsigned int unit){
   sprite.updateTex(path, unit);
 };
-void gameObject::SetProjection(int width, int height)
-{
-    glm::mat4 projection = glm::ortho(
-        0.0f,
-        (float)width,
-        (float)height,
-        0.0f
-    );
-
-    shader.use();
-    shader.setMat4("projection", projection);
-}
