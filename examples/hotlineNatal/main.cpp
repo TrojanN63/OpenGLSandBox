@@ -18,7 +18,7 @@ int main(){
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   glfwWindowHintString(GLFW_WAYLAND_APP_ID, "HotlineNatal");
 
-  GLFWwindow* window = glfwCreateWindow(640, 640, "Hotline Natal", nullptr, nullptr);
+  GLFWwindow* window = glfwCreateWindow(640, 480, "Hotline Natal", nullptr, nullptr);
 
   if (!window){
     glfwTerminate();
@@ -35,24 +35,27 @@ int main(){
   }
 
   gameObject wall(
-    "../assets/shaders/texture.vert",
+    "../assets/shaders/notNorm.vert",
     "../assets/shaders/texture.frag",
     "../assets/textures/wall.png",
-    0.2f,
-    0.2f
+    1.0f,
+    1.0f
   );
   gameObject xdemon(
-    "../assets/shaders/texture.vert",
+    "../assets/shaders/notNorm.vert",
     "../assets/shaders/texture.frag",
     "../assets/textures/xdemon/idle.png",
-    0.2f,
-    0.2f
+    1.0f,
+    1.0f
   );
+
+  wall.SetProjection(640, 480);
+  xdemon.SetProjection(640, 480);
 
   Input input;
 
-  float x = 0;
-  float y = 0;
+  float x = 320;
+  float y = 240;
   float angle = 0;
 
   float hspd = 0;
@@ -61,7 +64,7 @@ int main(){
   int movex = 0;
   int movey = 0;
 
-  float spd = 0.02f;
+  float spd = 10.0f;
 
   bool left;
   bool right;
@@ -88,11 +91,11 @@ int main(){
   bool animation = false;
   double frameDur = 0.05;
 
-  float xsize = 2.0f;
-  float ysize = 2.0f;
+  float xsize = 128;
+  float ysize = 128;
 
-  float wallx = 0.3;
-  float wally = 0.3;
+  float wallx = 100;
+  float wally = 100;
 
   glEnable(GL_BLEND);
 
@@ -108,7 +111,7 @@ int main(){
     wall.Bind(0);
 
     wall.Position(wallx,wally);
-    wall.Scale(1,1);
+    wall.Scale(64,64);
     wall.Rotation(0);
 
     wall.Draw();
@@ -127,7 +130,7 @@ int main(){
     input.mousePos(window, mousex, mousey);
     
     movex = right - left;
-    movey = up - down;
+    movey = down - up;
 
     float deltax = mousex - x;
     float deltay = mousey - y;
@@ -145,36 +148,36 @@ int main(){
     time = glfwGetTime();
     
     if (x<wallx){
-      if (x+0.05+hspd>wallx-0.1 and y>wally-0.1-0.05 and y<wally+0.05+0.1){
-        if (x+0.05+(hspd/abs(hspd))/100 < wallx-0.1){
-          x+=(hspd/abs(hspd))/100;
+      if (x+16+hspd>wallx-32 and y>wally-48 and y<wally+48){
+        if (x+16+hspd/abs(hspd) < wallx-32){
+          x+=hspd/abs(hspd);
         }
-        x, hspd = 0,0;
+        hspd = 0,0;
       }
     }
     if (x>wallx){
-      if (x-0.05+hspd<wallx+0.1 and y>wally-0.1-0.05 and y<wally+0.05+0.1){
-        if (x-0.05+(hspd/abs(hspd))/100 > wallx+0.1){
-          x+=(hspd/abs(hspd))/100;
+      if (x-16+hspd<wallx+32 and y>wally-48 and y<wally+48){
+        if (x-16+hspd/abs(hspd) > wallx+32){
+          x+=hspd/abs(hspd);
         }
-        x, hspd = 0,0;
+        hspd = 0,0;
       }
-    } 
+    }
 
     if (y<wally){
-      if (y+0.05+vspd>wally-0.1 and x>wallx-0.1-0.05 and x<wallx+0.05+0.1){
-        if (y+0.05+(vspd/abs(vspd))/100 < wally-0.1){
-          y+=(vspd/abs(vspd))/100;
+      if (y+16+vspd>wally-32 and x>wallx-48 and x<wallx+48){
+        if (y+16+vspd/abs(vspd) < wally-32){
+          y+=vspd/abs(vspd);
         }
-        y, vspd = 0,0;
+        vspd = 0,0;
       }
     }
     if (y>wally){
-      if (y-0.05+vspd<wally+0.1 and x>wallx-0.1-0.05 and x<wallx+0.05+0.1){
-        if (y-0.05+(vspd/abs(vspd))/100 > wally+0.1){
-          y+=(vspd/abs(vspd))/100;
+      if (y-16+vspd<wally+32 and x>wallx-48 and x<wallx+48){
+        if (y-16+vspd/abs(vspd) > wally+32){
+          y+=vspd/abs(vspd);
         }
-        y, vspd = 0,0;
+        vspd = 0,0;
       }
     }
 
@@ -209,7 +212,7 @@ int main(){
 
     xdemon.Scale(xsize, ysize);
     xdemon.Position(x, y);
-    xdemon.Rotation((angle-2*atan(1))*(xsize/abs(xsize)));
+    xdemon.Rotation(angle-2*atan(1));
 
     xdemon.Draw();
     
