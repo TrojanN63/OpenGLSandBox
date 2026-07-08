@@ -35,6 +35,7 @@ target_include_directories(engine PUBLIC
   external/include
   engine
   include
+  external/glm
 )
 
 target_link_libraries(engine PUBLIC
