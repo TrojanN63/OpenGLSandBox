@@ -6,6 +6,7 @@
 #include<../../engine/Input.hpp>
 #include<../../engine/gameObject.hpp>
 #include<../../engine/Render.hpp>
+#include "player.hpp"
 
 using namespace std;
 
@@ -44,55 +45,7 @@ int main(){
     1.0f,
     1.0f
   );
-  gameObject xdemon(
-    "../assets/shaders/notNorm.vert",
-    "../assets/shaders/texture.frag",
-    "../assets/textures/xdemon/idle.png",
-    1.0f,
-    1.0f
-  );
-
-  Input input;
-
-  float x = 320;
-  float y = 240;
-  float angle = 0;
-
-  float hspd = 0;
-  float vspd = 0;
-  
-  int movex = 0;
-  int movey = 0;
-
-  float spd = 10.0f;
-
-  bool left;
-  bool right;
-  bool up;
-  bool down;
-  bool punch;
-  bool releasePunch;
-  bool canpunch = true;
-
-  double mousex;
-  double mousey;
-
-  double time;
-  double execTime=0;
-
-  double punchTime;
-
-  vector<string> frames = {
-    "../assets/textures/xdemon/punch0.png",
-    "../assets/textures/xdemon/punch1.png",
-    "../assets/textures/xdemon/idle.png"
-  };
-  int frame = 0;
-  bool animation = false;
-  double frameDur = 0.05;
-
-  float xsize = 128;
-  float ysize = 128;
+  player xdemon;
 
   float wallx = 100;
   float wally = 100;
@@ -112,101 +65,9 @@ int main(){
 
     renderer.draw(wall);
 
-    right = input.keyPressed(window, GLFW_KEY_D);
-    left = input.keyPressed(window, GLFW_KEY_A);
-    up = input.keyPressed(window, GLFW_KEY_W);
-    down = input.keyPressed(window, GLFW_KEY_S);
-    punch = input.mouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
-    releasePunch = input.mouseButton(window, GLFW_MOUSE_BUTTON_LEFT, GLFW_RELEASE);
+    xdemon.step(window);
 
-    input.mousePos(window, mousex, mousey);
-    
-    movex = right - left;
-    movey = down - up;
-
-    float deltax = mousex - x;
-    float deltay = mousey - y;
-
-    angle = atan2(deltay, deltax);
-
-    hspd = movex * spd;
-    vspd = movey * spd;
-
-    if (movex!=0 and movey!=0){
-      hspd=movex*spd/sqrt(2);
-      vspd=movey*spd/sqrt(2);
-    }
-
-    time = glfwGetTime();
-    
-    if (x<wallx){
-      if (x+16+hspd>wallx-32 and y>wally-48 and y<wally+48){
-        if (x+16+hspd/abs(hspd) < wallx-32){
-          x+=hspd/abs(hspd);
-        }
-        hspd = 0,0;
-      }
-    }
-    if (x>wallx){
-      if (x-16+hspd<wallx+32 and y>wally-48 and y<wally+48){
-        if (x-16+hspd/abs(hspd) > wallx+32){
-          x+=hspd/abs(hspd);
-        }
-        hspd = 0,0;
-      }
-    }
-
-    if (y<wally){
-      if (y+16+vspd>wally-32 and x>wallx-48 and x<wallx+48){
-        if (y+16+vspd/abs(vspd) < wally-32){
-          y+=vspd/abs(vspd);
-        }
-        vspd = 0,0;
-      }
-    }
-    if (y>wally){
-      if (y-16+vspd<wally+32 and x>wallx-48 and x<wallx+48){
-        if (y-16+vspd/abs(vspd) > wally+32){
-          y+=vspd/abs(vspd);
-        }
-        vspd = 0,0;
-      }
-    }
-
-    if (time-execTime >= 0.016){
-      x+=hspd;
-      y+=vspd;
-      execTime=time;
-    }
-
-    if (punch and canpunch){
-      animation = true;
-      punchTime = time;
-      canpunch = false;
-    }
-    if (releasePunch){
-      canpunch = true;
-    }
-    
-    if (animation){
-      xdemon.UpdateTex(frames.at(frame), 0);
-      if (time - punchTime >= frameDur){
-        if (frame==frames.size()-1){
-          xsize*=-1;
-          frame=0;
-          animation=false;
-        }else{
-          frame++;
-        }
-        punchTime = time;
-      }
-    }
-
-    xdemon.Scale(xsize, ysize);
-    xdemon.Position(x, y);
-    xdemon.Rotation(angle-2*atan(1));
-
-    renderer.draw(xdemon);
+    renderer.draw(xdemon.object);
 
     renderer.endFrame();
   }

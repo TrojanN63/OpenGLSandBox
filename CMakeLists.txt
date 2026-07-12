@@ -46,6 +46,7 @@ target_link_libraries(engine PUBLIC
 # JOGOS
 add_executable(HotlineNatal
   examples/hotlineNatal/main.cpp
+  examples/hotlineNatal/player.cpp
 )
 
 target_include_directories(HotlineNatal PRIVATE
