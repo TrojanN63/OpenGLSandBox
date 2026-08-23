@@ -7,6 +7,7 @@
 #include<../../engine/gameObject.hpp>
 #include<../../engine/Render.hpp>
 #include "player.hpp"
+#include "wall.hpp"
 
 using namespace std;
 
@@ -38,17 +39,11 @@ int main(){
 
   Render renderer(window);
 
-  gameObject wall(
-    "../assets/shaders/notNorm.vert",
-    "../assets/shaders/texture.frag",
-    "../assets/textures/wall.png",
-    1.0f,
-    1.0f
-  );
+  wall block;
   player xdemon;
+  Input input;
 
-  float wallx = 100;
-  float wally = 100;
+  vector<gameObject> liveObjects = {};
 
   glEnable(GL_BLEND);
 
@@ -59,15 +54,20 @@ int main(){
   while(!glfwWindowShouldClose(window)){
     renderer.beginFrame();
 
-    wall.Position(wallx,wally);
-    wall.Scale(64,64);
-    wall.Rotation(0);
-
-    renderer.draw(wall);
-
+    block.step(window);
     xdemon.step(window);
+    
+    liveObjects = {block.object, xdemon.object};
+    
+    for (int i=0; i<liveObjects.size(); i++){
+      if (liveObjects.at(i).live){
+        renderer.draw(liveObjects.at(i));
+      }
+    }
 
-    renderer.draw(xdemon.object);
+    if (input.keyPressed(window, GLFW_KEY_E)){
+      block.object.live = false;
+    }
 
     renderer.endFrame();
   }

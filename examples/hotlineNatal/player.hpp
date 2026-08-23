@@ -6,6 +6,7 @@
 using namespace std;
 class player{
   public:
+
   Input input;
 
   float x = 320;

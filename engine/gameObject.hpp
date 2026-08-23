@@ -26,6 +26,7 @@ class gameObject{
     float sizex,
     float sizey
   );
+  bool live = true;
   
   std::vector<float> vertices;
 
