@@ -63,3 +63,13 @@ if (MINGW)
         -static-libstdc++
     )
 endif()
+
+add_executable(Paint
+  examples/paint/main.cpp
+)
+target_include_directories(Paint PRIVATE
+  external/include
+)
+target_link_libraries(Paint PRIVATE
+  engine
+)
