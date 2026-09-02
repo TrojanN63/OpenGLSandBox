@@ -24,7 +24,9 @@ class gameObject{
     const std::string& frag,
     const std::string& spritePath,
     float sizex,
-    float sizey
+    float sizey,
+    float posx,
+    float posy
   );
   bool live = true;
   

@@ -44,6 +44,7 @@ target_link_libraries(engine PUBLIC
 )
 
 # JOGOS
+#[[
 add_executable(HotlineNatal
   examples/hotlineNatal/main.cpp
   examples/hotlineNatal/player.cpp
@@ -63,6 +64,7 @@ if (MINGW)
         -static-libstdc++
     )
 endif()
+]]#
 
 add_executable(Paint
   examples/paint/main.cpp

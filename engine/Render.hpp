@@ -10,6 +10,7 @@ class Render{
   public:
     Render(GLFWwindow* window);
 
+    void setBgColor(float r, float g, float b, float a);
     void beginFrame();
     void endFrame();
     void draw(gameObject& object);

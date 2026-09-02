@@ -21,8 +21,10 @@ Render::Render(
     0.0f
   );
 };
+void Render::setBgColor(float r, float g, float b, float a){
+  glClearColor(r, g, b, a);
+}
 void Render::beginFrame(){
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 };
 void Render::endFrame(){

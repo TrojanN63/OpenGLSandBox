@@ -38,6 +38,8 @@ int main(){
   Render renderer(window);
 
   Input input;
+  double x;
+  double y;
 
   vector<gameObject> liveObjects = {};
 
@@ -48,26 +50,30 @@ int main(){
     GL_ONE_MINUS_SRC_ALPHA
   );
   while(!glfwWindowShouldClose(window)){
+    renderer.setBgColor(1.0f, 1.0f, 1.0f, 1.0f);
     renderer.beginFrame();
 
+    bool mouseClick = input.mouseButton(window, 0);
+    input.mousePos(window, x, y);
     
     for (int i=0; i<liveObjects.size(); i++){
       if (liveObjects.at(i).live){
-        liveObjects.at(i).Position(100,100);
+        //liveObjects.at(i).Position(100,100);
         liveObjects.at(i).Rotation(0.0f);
         liveObjects.at(i).Scale(1.0f,1.0f);
         renderer.draw(liveObjects.at(i));
       }
     }
 
-    if (input.keyPressed(window, GLFW_KEY_E)){
-
+    if (mouseClick){
       gameObject block(
         "../assets/shaders/notNorm.vert",
         "../assets/shaders/texture.frag",
-        "../assets/textures/wall.png",
-        64,
-        64
+        "../assets/textures/brush.png",
+        32,
+        32,
+        x,
+        y
       );
       liveObjects.push_back(block);
     }

@@ -13,7 +13,9 @@ gameObject::gameObject(
   const std::string& frag,
   const std::string& spritePath,
   float sizex,
-  float sizey
+  float sizey,
+  float posx,
+  float posy
 )
   : shader(vert, frag),
     mesh(sizex, sizey),
@@ -43,6 +45,8 @@ gameObject::gameObject(
   while((err = glGetError()) != GL_NO_ERROR) {
     std::cout << "OpenGL error: " << err << std::endl;
   }
+
+  transform.position = {posx, posy};
  
 };
 void gameObject::Position(
