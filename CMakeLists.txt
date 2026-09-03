@@ -75,3 +75,9 @@ target_include_directories(Paint PRIVATE
 target_link_libraries(Paint PRIVATE
   engine
 )
+if (MINGW)
+  target_link_options(Paint PRIVATE
+    -static-libgcc
+    -static-libstdc++
+  )
+endif()
