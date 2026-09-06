@@ -37,10 +37,12 @@ int main(){
 
   Render renderer(window);
 
-  Input input;
+  Input input(window);
   double x;
   double y;
 
+  int size = 32;
+  
   vector<gameObject> liveObjects = {};
 
   glEnable(GL_BLEND);
@@ -55,7 +57,10 @@ int main(){
 
     bool mouseClick = input.mouseButton(window, 0);
     input.mousePos(window, x, y);
-    
+
+    size+=input.scroll_y;
+    input.scroll_update();
+
     for (int i=0; i<liveObjects.size(); i++){
       if (liveObjects.at(i).live){
         //liveObjects.at(i).Position(100,100);
@@ -70,14 +75,14 @@ int main(){
         "../assets/shaders/notNorm.vert",
         "../assets/shaders/texture.frag",
         "../assets/textures/brush.png",
-        32,
-        32,
+        size,
+        size,
         x,
         y
       );
       liveObjects.push_back(block);
     }
-    if (input.keyPressed(window, GLFW_KEY_D)){
+    if (input.keyPressed(window, GLFW_KEY_D, GLFW_PRESS)){
       liveObjects = {};
     }
 
