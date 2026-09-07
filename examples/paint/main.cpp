@@ -42,6 +42,8 @@ int main(){
   double y;
 
   int size = 32;
+
+  vector<float> colors = {0.0f,0.0f,0.0f};
   
   vector<gameObject> liveObjects = {};
 
@@ -80,10 +82,20 @@ int main(){
         x,
         y
       );
+      block.SetRGB(colors);
       liveObjects.push_back(block);
     }
-    if (input.keyPressed(window, GLFW_KEY_D, GLFW_PRESS)){
-      liveObjects = {};
+    if (input.keyPressed(window, GLFW_KEY_R, GLFW_PRESS)){
+      colors = {1.0f,0.0f,0.0f};
+    }
+    if (input.keyPressed(window, GLFW_KEY_G, GLFW_PRESS)){
+      colors = {0.0f,1.0f,0.0f};
+    }
+    if (input.keyPressed(window, GLFW_KEY_B, GLFW_PRESS)){
+      colors = {0.0f,0.0f,1.0f};
+    }
+    if (input.keyPressed(window, GLFW_KEY_DELETE, GLFW_PRESS)){
+      colors = {0.0f,0.0f,0.0f};
     }
 
     renderer.endFrame();

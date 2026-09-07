@@ -60,4 +60,8 @@ class gameObject{
     unsigned int unit
   );
 
+  void SetRGB(
+    std::vector<float> RGBnew
+  );
+
 };

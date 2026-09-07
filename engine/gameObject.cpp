@@ -91,3 +91,6 @@ void gameObject::Scale(float x, float y){
 void gameObject::UpdateTex(const std::string& path, unsigned int unit){
   sprite.updateTex(path, unit);
 };
+void gameObject::SetRGB(std::vector<float> RGBnew){
+  sprite.RGB = RGBnew;
+}
