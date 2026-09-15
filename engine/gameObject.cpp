@@ -94,3 +94,12 @@ void gameObject::UpdateTex(const std::string& path, unsigned int unit){
 void gameObject::SetRGB(std::vector<float> RGBnew){
   sprite.RGB = RGBnew;
 }
+void gameObject::Step()
+{
+  if (script)
+  script->Step();
+};
+void gameObject::SetScript(std::unique_ptr<Script> script)
+{
+  this->script = std::move(script);
+};

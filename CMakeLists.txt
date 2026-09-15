@@ -66,17 +66,18 @@ if (MINGW)
 endif()
 ]]#
 
-add_executable(Paint
-  examples/paint/main.cpp
+
+add_executable(Platform
+  examples/platform/main.cpp
 )
-target_include_directories(Paint PRIVATE
+target_include_directories(Platform PRIVATE
   external/include
 )
-target_link_libraries(Paint PRIVATE
+target_link_libraries(Platform PRIVATE
   engine
 )
 if (MINGW)
-  target_link_options(Paint PRIVATE
+  target_link_options(Platform PRIVATE
     -static-libgcc
     -static-libstdc++
   )

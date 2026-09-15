@@ -5,6 +5,7 @@
 #include "Shader.hpp"
 #include "Texture.hpp"
 #include "Mesh.hpp"
+#include "Script.hpp"
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -17,8 +18,9 @@ struct Transform {
 };
 
 class gameObject{
+  private:
+    std::unique_ptr<Script> script;
   public:
-
   gameObject(
     const std::string& vert,
     const std::string& frag,
@@ -28,7 +30,6 @@ class gameObject{
     float posx,
     float posy
   );
-  bool live = true;
   
   std::vector<float> vertices;
 
@@ -62,6 +63,12 @@ class gameObject{
 
   void SetRGB(
     std::vector<float> RGBnew
+  );
+
+  void Step();
+  
+  void SetScript(
+    std::unique_ptr<Script> script
   );
 
 };

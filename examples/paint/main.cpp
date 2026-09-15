@@ -64,12 +64,9 @@ int main(){
     input.scroll_update();
 
     for (int i=0; i<liveObjects.size(); i++){
-      if (liveObjects.at(i).live){
-        //liveObjects.at(i).Position(100,100);
-        liveObjects.at(i).Rotation(0.0f);
-        liveObjects.at(i).Scale(1.0f,1.0f);
-        renderer.draw(liveObjects.at(i));
-      }
+      liveObjects.at(i).Rotation(0.0f);
+      liveObjects.at(i).Scale(1.0f,1.0f);
+      renderer.draw(liveObjects.at(i));
     }
 
     if (mouseClick){
