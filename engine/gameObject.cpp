@@ -5,6 +5,7 @@
 #include "Shader.hpp"
 #include "Texture.hpp"
 #include "Mesh.hpp"
+#include "Input.hpp"
 #include <vector>
 #include <iostream>
 
@@ -94,10 +95,10 @@ void gameObject::UpdateTex(const std::string& path, unsigned int unit){
 void gameObject::SetRGB(std::vector<float> RGBnew){
   sprite.RGB = RGBnew;
 }
-void gameObject::Step()
+void gameObject::Step(GLFWwindow* window, Input& input)
 {
   if (script)
-  script->Step();
+  script->Step(window, input);
 };
 void gameObject::SetScript(std::unique_ptr<Script> script)
 {

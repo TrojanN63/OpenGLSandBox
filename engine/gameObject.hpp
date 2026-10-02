@@ -6,6 +6,7 @@
 #include "Texture.hpp"
 #include "Mesh.hpp"
 #include "Script.hpp"
+#include "Input.hpp"
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -65,7 +66,7 @@ class gameObject{
     std::vector<float> RGBnew
   );
 
-  void Step();
+  void Step(GLFWwindow*, Input&);
   
   void SetScript(
     std::unique_ptr<Script> script

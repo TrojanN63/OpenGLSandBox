@@ -7,7 +7,7 @@ class Input{
   public:
     Input(GLFWwindow* window);
 
-    bool keyPressed(GLFWwindow* window, int key, int action);
+    bool keyPressed(GLFWwindow* window, int key, int action=GLFW_PRESS);
     void mousePos(GLFWwindow* window, double &xpos, double &ypos);
     bool mouseButton(GLFWwindow* window, int button, int action=GLFW_PRESS);
 

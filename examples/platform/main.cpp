@@ -44,8 +44,49 @@ int main(){
     public:
       PlayerScript(gameObject* obj)
         : Script(obj) {}
-    void Step() override {
-      cout << "funcionando";
+
+      float x = 320;
+      float y = 240;
+
+      float hspd = 0;
+      float vspd = 0;
+
+      int move = 0;
+
+      float grvt = 1.0f;
+      float jumpForce = 15.0f;
+      float spd = 5.0f;
+
+      bool left;
+      bool right;
+      bool jump;
+
+
+    void Step(GLFWwindow* window, Input& input) override {
+      right = input.keyPressed(window, GLFW_KEY_D);
+      left = input.keyPressed(window, GLFW_KEY_A);
+      jump = input.keyPressed(window, GLFW_KEY_SPACE);
+
+      move = right - left;
+
+      hspd = move * spd;
+
+      x+=hspd;
+
+      if (jump && y>=240) vspd-=jumpForce;
+
+      if (y<240) vspd+=grvt;
+
+      if (y+vspd > 240){
+        if (y+(vspd/abs(vspd)) <= 240){
+          y+=1.0f;
+        }
+        y, vspd = 0, 0;
+      }
+
+      y+=vspd;
+
+      object->Position(x,y);
     }
   };
  
@@ -54,11 +95,11 @@ int main(){
     make_unique<gameObject>(
       "../assets/shaders/notNorm.vert",
       "../assets/shaders/texture.frag",
-      "../assets/textures/xdemon/idle.png",
-      128,
-      128,
-      50,
-      50
+      "../assets/textures/playa.png",
+      64,
+      64,
+      320,
+      240
     )
   );
 
@@ -81,8 +122,8 @@ int main(){
     for (auto& object : liveObjects){
       renderer.draw(*object);
       object->Rotation(0);
-      object->Scale(1,1);
-      object->Step();
+      object->Scale(1,-1);
+      object->Step(window, input);
     }
 
     renderer.endFrame();

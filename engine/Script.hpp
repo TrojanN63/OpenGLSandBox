@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include "Input.hpp"
+#include <GLFW/glfw3.h>
 class gameObject;
 
 class Script {
@@ -9,5 +11,5 @@ class Script {
     Script(gameObject* obj)
       : object(obj) {}
     virtual ~Script() = default;
-    virtual void Step() = 0;
+    virtual void Step(GLFWwindow*, Input&) = 0;
 };
