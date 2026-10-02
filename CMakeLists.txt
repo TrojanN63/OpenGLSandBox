@@ -66,16 +66,24 @@ if (MINGW)
 endif()
 ]]#
 
+if (WIN32)
+  add_executable(Platform WIN32
+    examples/platform/main.cpp
+  )
+else()
+  add_executable(Platform
+    examples/platform/main.cpp
+  )
+endif()
 
-add_executable(Platform
-  examples/platform/main.cpp
-)
 target_include_directories(Platform PRIVATE
   external/include
 )
+
 target_link_libraries(Platform PRIVATE
   engine
 )
+
 if (MINGW)
   target_link_options(Platform PRIVATE
     -static-libgcc
