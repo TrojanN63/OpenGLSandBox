@@ -115,15 +115,22 @@ int main(){
     GL_SRC_ALPHA,
     GL_ONE_MINUS_SRC_ALPHA
   );
+
+  double time = 0.0;
+
   while(!glfwWindowShouldClose(window)){
     renderer.setBgColor(0.1f, 0.1f, 0.1f, 1.0f);
     renderer.beginFrame();
+    double currentTime = glfwGetTime();
 
     for (auto& object : liveObjects){
       renderer.draw(*object);
       object->Rotation(0);
       object->Scale(1,-1);
-      object->Step(window, input);
+      if (currentTime - time >= (1/60)){
+        object->Step(window, input);
+        time = currentTime;
+      }
     }
 
     renderer.endFrame();
